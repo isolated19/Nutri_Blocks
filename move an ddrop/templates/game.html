@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catch the Fruit</title>
+  <style>
+    /* Reset & base styles */
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    /* Full screen game container */
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      /* background-color: white; */
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+    }
+
+    /* HUD (Score, Timer, Pause Button) - positioned over the game area */
+    .hud {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      text-align: center;
+    }
+    .hud h1,
+    .hud h2 {
+      margin: 5px 0;
+      font-size: 24px;
+    }
+    .hud button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    /* Style the image button */
+    .pause-btn {
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    
+    /* Hover effect */
+    .pause-btn:hover {
+        transform: scale(1.1);  /* Slightly zoom in when hovered */
+    }
+    
+    /* Active effect (when clicked) */
+    .pause-btn:active {
+        transform: scale(0.95);  /* Slightly shrink when clicked */
+    }
+
+
+    /* Tile styling */
+    .tile {
+      position: absolute;
+      width: 10vw;
+      max-width: 50px;
+      height: auto;
+      bottom: 0;
+      left: 0;
+      
+      transition: left 0.1s ease;
+    }
+
+    /* Falling item styling */
+    .falling-item {
+      position: absolute;
+      width: 6vw;
+      max-width: 30px;
+      height: auto;
+      top: 0;
+    }
+
+    .burst {
+      animation: burst 0.3s forwards;
+    }
+    @keyframes burst {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    /* Game Over Pop-up */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* background: white; */
+      background: linear-gradient(135deg, #264785, #366ac5);
+      padding: 20px;
+      padding-bottom: 70px;  /* extra space at the bottom for buttons */
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      display:none;
+      width: 80%;
+      max-width: 500px;
+      min-height: 300px; /* Adjust as needed for larger content */
+      /*z-index: 20;*/
+    }
+    
+    .winner-logo {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    
+    .popup-buttons {
+      justify-content: space-between;
+      /*position: absolute;*/
+      /*bottom: 10px;*/
+      /*left: 10px;*/
+      display: flex;
+      gap: 10px;
+    }
+    
+   
+    
+    /* Style for popup image buttons */
+    .popup-btn {
+      justify-content: space-between;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      margin: 0 10px;
+    }
+    
+    /* Hover effect for popup image buttons */
+    .popup-btn:hover {
+      transform: scale(1.1);  /* Slightly zoom in when hovered */
+    }
+    
+    /* Active effect (when clicked) */
+    .popup-btn:active {
+      transform: scale(0.95);  /* Slightly shrink when clicked */
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .hud h1,
+      .hud h2 {
+        font-size: 20px;
+      }
+      .hud button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+      .tile {
+        width: 12vw;
+      }
+      .falling-item {
+        width: 8vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HUD overlay -->
+    <div class="hud">
+      <form action="/score_time" method="POST">
+        <h1>Score: <span id="score" name="score">0</span></h1>
+        <h2>Time Left: <span id="timer"name=time>03:00</span></h2>
+      </form>
+      <!--<button-- id="pause-btn">Pause</button-->
+      <!-- Replace the button with an image -->
+      <img src="https://icons.iconarchive.com/icons/icons-land/play-stop-pause/128/Pause-Hot-icon.png" 
+       alt="Play/Pause" id="pause-btn" class="pause-btn" />
+
+    </div>
+    <!-- The Tile -->
+    <img src="https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-games-config-tiles-icon.png" 
+         alt="Tile" id="tile" class="tile" />
+  </div>
+
+  <!-- Game Over Pop-up -->
+  <div id="game-over-popup" class="popup">
+    
+     <!-- Winner logo (replace the src URL with your winner logo image) -->
+   <img src="https://icons.iconarchive.com/icons/iconarchive/badge-trophy/128/Badge-Trophy-02-icon.png" alt="Winner Logo" class="winner-logo">
+    
+    <h2 id="game-over-title">Game Over! </h2>
+    <p id="game-over-message"></p>
+      <!-- Buttons container positioned at bottom left of the popup -->
+    <div class="popup-buttons">
+      <!--<button onclick="restartGame()">Restart</button>-->
+      <!--<button onclick="showLeadership()">Leadership</button>-->
+      
+          <!-- Restart button with image -->
+    <img src="https://icons.iconarchive.com/icons/pictogrammers/material/128/restart-icon.png" alt="Restart" class="popup-btn" id="restart-btn" />
+    
+    <!-- Leadership button with image -->
+    <img src="https://icons.iconarchive.com/icons/iconoir-team/iconoir/128/leaderboard-star-icon.png" alt="Leadership" class="popup-btn" id="leadership-btn" />
+    </div>
+  </div>
+
+  <script>
+    let tile = document.getElementById('tile');
+    let container = document.querySelector('.container');
+    let scoreDisplay = document.getElementById('score');
+    let timerDisplay = document.getElementById('timer');
+    let pauseBtn = document.getElementById('pause-btn');
+    let gameOverPopup = document.getElementById('game-over-popup');
+    let gameOverMessage = document.getElementById('game-over-message');
+    let restartBtn = document.getElementById('restart-btn');
+    let leadershipBtn = document.getElementById('leadership-btn');
+    // let username="username";
+
+    let score = 0;
+    let gamePaused = false;
+    let speed = 5; // Initial falling speed
+    let timeLeft = 180; // 3 minutes countdown
+    let gameInterval;
+    let timerInterval;
+    
+     // Initialize tile position (centered horizontally)
+    let tilePos = (container.clientWidth - tile.clientWidth) / 2;
+    tile.style.left = tilePos + 'px';
+
+    // Move the tile using arrow keys using the tilePos variable
+    document.addEventListener('keydown', function (e) {
+      if (gamePaused) return;
+      
+      let containerWidth = container.clientWidth;
+      let tileWidth = tile.clientWidth;
+      // Get current left position relative to the container
+      // Update tilePos based on key pressed
+      if (e.key === 'ArrowRight') {
+        tilePos += containerWidth * 0.05;
+      }
+      if (e.key === 'ArrowLeft') {
+        tilePos -= containerWidth * 0.05;
+      }
+      
+      // Ensure the tile stays within the container bounds
+      tilePos = Math.max(0, Math.min(tilePos, containerWidth - tileWidth));
+      tile.style.left = tilePos + 'px';
+    });
+
+    // Create a falling item (fruit or junk food)
+    function createFallingItem() {
+      if (gamePaused) return;
+      
+      let item = document.createElement('img');
+      item.classList.add('falling-item');
+      
+      // 70% chance for a fruit, 30% for junk food
+      let isFruit = Math.random() < 0.7; 
+      item.src = isFruit 
+        ? 'https://icons.iconarchive.com/icons/martin-berube/food/128/strawberry-icon.png' 
+        : 'https://icons.iconarchive.com/icons/himacchi/sweetbox/128/strawberry-cake-icon.png';
+      item.dataset.type = isFruit ? 'fruit' : 'junk';
+      
+      // Set a random horizontal position within the container bounds
+      item.style.left = Math.floor(Math.random() * (container.clientWidth - 30)) + 'px';
+      container.appendChild(item);
+      
+      moveItem(item);
+    }
+    
+    // Move the falling item
+    function moveItem(item) {
+      let fallInterval = setInterval(() => {
+        if (gamePaused) return;
+        
+        let top = parseInt(item.style.top) || 0;
+        item.style.top = (top + speed) + 'px';
+        
+        // Remove the item if it falls off the screen
+        if (top > container.clientHeight - 30) {
+          if (container.contains(item)) {
+            container.removeChild(item);
+          }
+          clearInterval(fallInterval);
+        }
+        
+        checkCollision(item, fallInterval);
+      }, 50);
+    }
+    
+    // Check collision with the tile
+    function checkCollision(item, fallInterval) {
+      if (item.collisionHandled) return; // Prevent duplicate handling
+      
+      let tileRect = tile.getBoundingClientRect();
+      let itemRect = item.getBoundingClientRect();
+      
+      if (
+        tileRect.left < itemRect.right &&
+        tileRect.right > itemRect.left &&
+        tileRect.bottom > itemRect.top &&
+        tileRect.top < itemRect.bottom
+      ) {
+        // Mark this item as already processed
+        item.collisionHandled = true;
+    
+        if (item.dataset.type === 'fruit') {
+          score += 1;
+          // scoreDisplay.classList.add('score-up');
+        } else {
+          score -= 1;
+          // scoreDisplay.classList.add('score-down');  // Add the animation class
+
+        }
+    
+        scoreDisplay.textContent = score;
+
+         // Remove animation class after animation completes
+        // setTimeout(() => {
+        //   scoreDisplay.classList.remove('score-up', 'score-down');
+        // }, 300);  // Matches the duration of the animation
+        item.classList.add('burst');
+    
+        setTimeout(() => {
+          if (container.contains(item)) {
+            container.removeChild(item);
+          }
+          clearInterval(fallInterval);
+        }, 300);
+    
+        // End game if score drops to 0 or below
+        // if (score <= 0) {
+        //   endGame("You lost! Your score is " + score + ".");
+        // }
+      }
+    }
+    
+    // Increase falling speed every 30 seconds
+    setInterval(() => {
+      if (!gamePaused) {
+        speed += 1;
+      }
+    }, 30000);
+    
+    // Countdown Timer
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        if (gamePaused) return;
+    
+        if (timeLeft <= 0) {
+          endGame("Time's up! {{username}}, Your final score is " + score);
+          return;
+        }
+    
+        timeLeft--;
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        timerDisplay.textContent = 
+          (minutes < 10 ? "0" : "") + minutes + ":" + 
+          (seconds < 10 ? "0" : "") + seconds;
+      }, 1000);
+    }
+
+    
+    
+    // End Game Function
+    function endGame(message) {
+      clearInterval(gameInterval);
+      clearInterval(timerInterval);
+      gameOverPopup.style.display = "block";
+      gameOverMessage.textContent = message;
+
+     saveScore(playername, score)
+    }
+    
+    function saveScore(playername,score){
+
+    }
+     //Game leadership Function
+    leadershipBtn.addEventListener('click', function () {
+      // Add your leadership/leaderboard logic here.
+       window.location.href = "/game";
+      // alert("Leadership functionality is not implemented yet.");
+    });
+        
+        
+    // Restart Game Function
+    // Restart Game Function (when image button is clicked)
+     // Restart Game Function
+    
+      restartBtn.addEventListener('click', function () {
+       
+        
+          // alert('The Game will restart');
+        // Reset the game state manually
+          resetGame();
+      });
+      
+      
+      function resetGame() {
+    // Clear any active intervals
+      clearInterval(gameInterval);
+      clearInterval(timerInterval);
+      
+      // Reset the variables
+      score = 0;
+      timeLeft = 180;
+      gamePaused = false;
+      speed = 5; // Reset falling speed
+      
+      // Reset the score and timer displays
+      scoreDisplay.textContent = score;
+      timerDisplay.textContent = "03:00";  // Reset timer to initial value
+      
+      // Hide the game over popup
+      gameOverPopup.style.display = "none";
+      
+      // Reset the tile position
+      tile.style.left = (container.clientWidth - tile.clientWidth) / 2 + 'px';
+      
+      // Restart the game loop and timer
+      gameInterval = setInterval(createFallingItem, 1000);
+      startTimer();
+    }
+ 
+  
+    
+    // Pause & Resume the game with the image button
+    pauseBtn.addEventListener('click', function () {
+      if (gamePaused) {
+        // Start the game
+        gamePaused = false;
+        pauseBtn.src = 'https://icons.iconarchive.com/icons/icons-land/play-stop-pause/128/Pause-Hot-icon.png'; // Change image to Pause
+        gameInterval = setInterval(createFallingItem, 1000); // Start falling items
+        startTimer(); // Start the timer
+      } else {
+        // Pause the game
+        gamePaused = true;
+        pauseBtn.src = 'https://icons.iconarchive.com/icons/icons-land/vista-multimedia/128/Play-1-Hot-icon.png'; // Change image to Play
+        clearInterval(gameInterval); // Stop falling items
+        clearInterval(timerInterval); // Stop the timer
+      }
+    });
+
+    
+    // Start the game loop
+    gameInterval = setInterval(createFallingItem, 1000);
+    startTimer();
+  </script>
+</body>
+</html>
