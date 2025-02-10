@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leaderboard</title>
   <style>
-    /* General Body Styling */
+    /* General Body Styling*/
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      background: radial-gradient(50% 50% at 50% 50%, #C52525 0%, #6A0406 100%);
       color: white;
       padding: 20px;
       margin: 0;
@@ -19,11 +19,34 @@
       overflow: hidden;
     }
 
+    /* Leaderboard Header (Image & Title) */
+    .leaderboard-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .leaderboard-header img {
+      width: 150px; /* adjust as needed */
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .leaderboard-header h2 {
+      font-size: 2.5rem;
+      color: #ffd700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-family: 'Orbitron', sans-serif;
+      margin: 10px 0 0;
+
+    }
+
     /* Leaderboard Container */
     .leaderboard-container {
       width: 90%;
       max-width: 800px;
-      background: rgba(0, 0, 0, 0.7);
+      background:#F69C19;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       padding: 20px;
       border-radius: 15px;
@@ -58,11 +81,11 @@
     table td {
       padding: 15px;
       text-align: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid #F7CA2D;
     }
 
     table th {
-      background-color: #ff5722;
+      background-color: #690305;
       color: white;
       font-size: 1.2rem;
       letter-spacing: 1px;
@@ -70,11 +93,11 @@
     }
 
     table tr:nth-child(even) {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: #F69C19;
     }
 
     table tr:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: #F7CA2D;
     }
 
     table td {
@@ -148,55 +171,55 @@
     @keyframes moveBackground {
       from { transform: translateY(0); }
       to { transform: translateY(-200px); }
-    }
+    } */
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <!-- Leaderboard Section -->
+  
+<h2><img src="/img/icons/leaderboard.png" alt="Leaderboard"></h2>
   <div class="leaderboard-container">
-    <h2>Leaderboard</h2>
+    
     <table id="leaderboard">
       <thead>
         <tr>
           <th>Rank</th>
           <th>Player Name</th>
           <th>Score</th>
+          <th>Time</th>
         </tr>
       </thead>
       <tbody>
         <!-- Pre-populated player list -->
-        <tr>
-          <td>1</td>
-          <td>ShadowHunter</td>
-          <td>1200</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>DragonSlayer</td>
-          <td>1150</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>NightRider</td>
-          <td>1100</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>PhoenixFire</td>
-          <td>1050</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>StormBreaker</td>
-          <td>1000</td>
-        </tr>
+        
+          
+          {% for row in scores %}
+          <tr>
+            <td class="rank" style="color: #fff;">
+            {% if loop.index == 1 %}
+              1
+            {% elif loop.index == 2 %}
+              2
+            {% elif loop.index == 3 %}
+              3
+            {% else %}
+              {{ loop.index }}
+            {% endif %}
+            </td>
+              <td>{{ row[0] }}  </td>
+              <td style="letter-spacing: 5px;">{{ row[1] }}  </td>
+              <td> {{ row[2] }} </td>
+              <td> {{row[3]}} </td>
+          </tr>
+          {% endfor %}
+       
       </tbody>
-    </table>
-    <!-- Home Button -->
-    <a href="index.html" class="home-btn">Home</a>
+    
+   
   </div>
 
-</body>
+</body> <!-- Home Button -->
+    <a href="/" class="home-btn">Home</a>
 </html>
