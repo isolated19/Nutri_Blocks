@@ -1,0 +1,449 @@
+   /* Global Styles */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    user-select: none;  /* Prevents text/image selection */
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    /* overflow: hidden; */
+    background: radial-gradient(circle, #8d0202, #460101);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* background: radial-gradient(circle, #8B0000, #400000); */
+    flex-direction: column;
+    padding: 20px;
+    overflow:hidden;
+    
+
+  }
+  /* Game Container */
+  .game-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    /* outline: #29ff46; */
+  }
+  /* Tile Styling */
+  .tile {
+    position: absolute;
+    width: 250px;
+    height: 40px;
+    background: linear-gradient(to right, #FFA500, #FFD700);
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    bottom: 4px;
+    left: 0;
+    /* transform: translateX(0); */
+    transform: translateX(-50%);
+
+    transition:  0.2s ease-out;
+    cursor: grab;
+  }
+  /* .container{
+    position: relative;
+    width: 100%;
+  } */
+  /* Timer Bar */
+  .timer-container {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 400px;
+    height: 50px;
+    background: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    z-index: 2;
+  }
+  .timer-text {
+    background: #8B0000;
+    color: white;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    margin-right: 10px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress {
+    height: 100%;
+    /* background: rgb(206, 207, 206); */
+    /* transition: width 0.2s ease-in-out; */
+    transition: width 0.2s ease-in-out, height 0.3s linear
+
+  }
+
+  /* #low-health-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    padding: 15px 30px;
+    background: red;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    z-index: 1000;
+  } */
+  
+  /* .pop-effect {
+    animation: popUp 0.5s ease-in-out;
+  } */
+  
+  @keyframes popUp {
+    0% {
+      transform: translate(-50%, -50%) scale(0.7);
+      opacity: 0;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+  }
+  
+
+
+
+  /* Falling Items */
+  .falling-item {
+    position: absolute;
+    width: 10vw;
+    max-width: 80px;
+    /* Removed CSS animation to avoid conflict with JS movement */
+  }
+  /* (Optional) Basket styling if needed */
+  .basket {
+    position: absolute;
+    bottom: 50px;
+    width: 15vw;
+    max-width: 100px;
+    transition: 0.3s ease-in-out;
+  }
+
+
+
+
+
+
+
+
+
+  /* Game Over Popup */
+  .game-over-box {
+    background: radial-gradient(circle, #8B0000, #400000);
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display:none; /* Hidden until game over */
+    z-index: 10;
+
+  }
+  /* Trophy Icon */
+  .trophy-icon {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    background: transparent;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  .trophy-icon img {
+    width: 139px;
+  }
+  /* Title and Message */
+  h2 {
+    color: gold;
+    font-size: 1.5rem;
+    margin-top: 40px;
+  }
+  p {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 13px;
+    margin-top: 14px;
+  }
+  /* Stars */
+  .stars {
+    margin: 10px 0;
+  }
+  .stars img {
+    width: 230px;
+    margin: 0 5px;
+  }
+  /* Score & Position */
+  .score-box {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 32px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  /* Buttons */
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  .btn {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .play-again {
+    background: transparent;
+    color: white;
+    border: 1px solid gold;
+  }
+  .leaderboard {
+    background: gold;
+    color: #333;
+  }
+  .btn:hover {
+    transform: scale(1.05);
+  }
+  /* Floating Points (collision feedback) */
+  .floating-points {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 1;
+    transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+    pointer-events: none;
+  }
+  /* Burst Animation */
+  .burst {
+    animation: burst 0.3s forwards;
+    /* animation: move01 1.5s linear infinite; */
+  }
+  @keyframes burst {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ /* Responsive Styles */
+ @media   (max-width: 768px) {
+   
+  /* * {
+    outline: 1px solid rgb(0, 255, 13);
+     Highlights all elements
+  } */
+
+
+
+
+  .tile {
+    bottom: 5px;
+    max-height: 20px;
+    max-width: 130px;
+  }
+  
+  .timer-container {
+    width: 90%;
+    height: 40px;
+  }
+  .timer-text {
+    font-size: 1rem;
+    padding: 5px 10px;
+    position: relative;
+  }
+  .falling-item {
+    width: 15vw;
+    
+    
+  }
+  .game-over-box {
+    width: 95%;
+    padding: 15px;
+  }
+  .score-box {
+    font-size: 1rem;
+    margin: 20px 0;
+  }
+  .btn {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+  .stars img {
+    width: 180px;
+  }
+  .trophy-icon {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+  }
+}
+
+@media   (max-width: 480px) {
+  /* html, body {
+    overflow-x: hidden; 
+    width: 100%;
+  }  */
+  
+   /* .tile {
+   
+    max-height: 15px;
+    height: 30px;
+       
+    }  */
+   
+  
+  .timer-container {
+    width: 95%;
+    height: 35px;
+  }
+  .timer-text {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+  }
+  .falling-item {
+    width: 40vw;
+  }
+  
+  .scoreboxes{
+    display: flex;
+  }
+  
+  .starts {
+    position: absolute;
+  }
+  h2 {
+    font-size: 1.3rem;
+    text-align: center;
+    max-width: 90%;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  p {
+    font-size: 0.9rem;
+  }
+  .score-box {
+    font-size: 0.9rem;
+    margin: 7px 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 1px 43px;
+  }
+  
+.buttons{
+  display: flex;
+  justify-content: space-between;
+}
+  .btn {
+    /* padding: 6px; */
+    font-size: 0.8rem;
+    flex: 1;
+    margin: 5px;
+  }
+  .stars img {
+    width: 150px;
+  }
+  .trophy-icon {
+    width: 50px;
+    height: 50px;
+    top: -25px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+
+
+}
+
+

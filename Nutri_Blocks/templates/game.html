@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no" />
+  <title>Nutri Blocks - Game</title>
+  <link rel="stylesheet" href="/static/css/game.css">
+  <!-- <link rel="stylesheet" type="text/css"  href="{{url_for('static',filename='/css/game.css')}}"> -->
+  <style>
+  
+    
+    /* Mobile Devices */
+@media screen and (max-width: 486px) {
+  body{
+    margin:0;
+    padding: 0;
+    overflow: hidden;
+    margin-top: -20px;
+
+  }
+  .game-container{
+    width: 100%;
+    /* height: 10px; */
+  }
+  .timer-container {
+    width: 100%;
+    height: 40px;
+  }
+  .timer-text {
+    font-size: 1rem;
+    padding: 3px 10px;
+  }
+  .falling-item {
+    width: 15vw;
+  }
+
+  .tile {
+    width: 22vw;
+    height: 6vw;
+    top: 681x;
+    left: auto;
+  }
+  .game-over-box {
+    width: 95%;
+    top: 400px;
+  }
+  .btn {
+    font-size: 0.9rem;
+  }
+
+}
+
+
+
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <!-- Timer -->
+      <div class="timer-container">
+        <div class="timer-text" id="timer">03:00</div>
+        <div class="progress-bar">
+  
+    <div class="progress" id="progress">
+      <!-- <div id="low-health-popup">⚠ Warning! Low Health! -->
+
+    </div>
+  </div> 
+        </div>
+      </div>
+    <!-- Tile -->
+      <div class="tile" id="tile"></div>
+    <!-- Game Over Popup -->
+      <div class="game-over-box" id="game-over-box">
+      <!-- Trophy Icon -->
+      <div class="trophy-icon">
+        <img src="/static/img/trophy.png" alt="Trophy" />
+      </div>
+      <!-- Title & Message -->
+      <h2>Congratulations!</h2>
+      <p>You did a fantastic job! You've successfully</p>
+      <!-- Stars -->
+      <div class="stars">
+        <img src="/static/img/stars.png" alt="Star" />
+      </div>
+      <div  class=scoreboxes>
+      <!-- Score & Position -->
+      <div class="score-box">
+        <span>Score</span>
+        <span id="score">0</span>
+      </div>
+      <div class="score-box">
+        <span>Time</span>
+        <span id="timer-leader">00:00</span>
+      </div>
+      </div>
+      <!-- Buttons -->
+      <div class="buttons">
+        <button class="btn play-again" id="restart-btn" onclick="resetGame()"> Play Again</button>
+        <button class="btn leaderboard" id="leadership-btn"> Leaderboard</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="/static/js/game.js">
+  
+
+  </script>
+
+  <script>   
+    let username= "{{username}}";
+    console.log(username);
+  
+  </script>
+
+  
+</body>
+</html>

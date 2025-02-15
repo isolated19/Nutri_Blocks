@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri Blocks - Responsive</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle, #8B0000, #400000);
+            flex-direction: column;
+            padding: 20px;
+            overflow:hidden;
+            
+        }
+
+        /* Logo and Title */
+        .title {
+            width: 500px;
+            top: 50px;
+            font-weight: bold;
+            text-align: center;
+            color: #FFD700;
+            text-shadow: 4px 4px 0px #FF4500, 6px 6px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 200px;
+        }
+
+        /* Input Box */
+        .input-container {
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            border: 2px solid #FFD700;
+            border-radius: 30px;
+            background: transparent;
+            color: white;
+            font-size: 1.2rem;
+            outline: none;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Login Button */
+        .login-btn {
+            width: 90%;
+            max-width: 400px;
+            padding: 15px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(to right, #FFA500, #FFD700);
+            color: #400000;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            text-align: center;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Background Fruits */
+        .fruit {
+            position: absolute;
+            width: 10vw;
+        }
+
+        .top-left { top: 2%; left: 2%; }
+        .top-right { top: 2%; right: 2%; }
+        .bottom-left { bottom: 2%; left: 2%; }
+        .bottom-right { bottom: 2%; right: 2%; }
+        .floating { animation: float 2s infinite ease-in-out alternate; }
+
+        @keyframes float {
+            from { transform: translateY(0px); }
+            to { transform: translateY(10px); }
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+          
+            .title {
+                width: 65vw;
+            }
+
+            .input-container, .login-btn {
+                width: 100%;
+                font-size: 1rem;
+            }
+
+            .fruit {
+                width: 15vw;
+            }
+            
+        }
+        /* Media Query for Landscape Mode */
+        @media screen and (max-width:768px)and (orientation: landscape) {
+            .container {
+                display: none; /* Hide the content */
+            }
+            .fruit{
+                display: none;
+            }
+
+            body::before {
+                content: "Please rotate your device to portrait mode.";
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100vw;
+                height: 100vh;
+                background-color: black;
+                color: white;
+                font-size: 24px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Fruits -->
+    <img src="/static/img/fruits/fruit5.png" class="fruit top-left floating">
+    <img src="/static/img/fruits/fruit6.png" class="fruit top-right floating">
+    <img src="/static/img/junks/junk1.png" class="fruit bottom-left floating">
+    <img src="/static/img/junks/junk3.png" class="fruit bottom-right floating">
+
+    <!-- Title -->
+    <img src="/static/img/Nutri-Blocks-LOGO.png"  class="title floating">
+
+    <form id="username-form" method="POST" action="/save_name" autocomplete="off">
+
+        <!-- Input Field -->
+        <input type="text" class="input-container"name="username" placeholder="User Name" required>
+
+        <!-- Login Button -->
+        <button class="login-btn">Login</button>
+    </form>
+
+</body>
+<script src="/static/js/index.js"></script>
+</html>

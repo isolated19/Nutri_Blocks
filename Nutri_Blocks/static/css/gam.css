@@ -1,0 +1,170 @@
+   /* Global Styles */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  body,html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: radial-gradient(circle, #8B0000, #400000);
+  }
+
+   /* Tile Styling */
+   .tile {
+    position: absolute;
+    width: 300px;
+    height: 40px;
+    background: linear-gradient(to right, #FFA500, #FFD700);
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    bottom: 20px;
+    left: 0;
+    transform: translateX(0);
+    transition: left 0.2s ease-out;
+    cursor: grab;
+  }
+
+  /* Game Container */
+  .game-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+
+    /* Falling Items */
+    /* .falling-item {
+        position: absolute;
+        width: 10vw;
+        max-width: 80px;
+        /* Removed CSS animation to avoid conflict with JS movement */
+ /* }  */
+
+
+   /* Timer Bar */
+   .timer-container {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 400px;
+    height: 50px;
+    background: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    z-index: 2;
+  }
+  
+  .timer-text {
+    background: #8B0000;
+    color: white;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    margin-right: 10px;
+  }
+
+
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress {
+    width: 100%;
+    height: 100%;
+    background: orange;
+    transition: width 1s linear;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+      /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: radial-gradient(circle, #8B0000, #400000);
+    height: 100%;
+  }
+  
+  /* Game Container */
+  .game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Tile Styling */
+  .tile {
+    position: absolute;
+    width: 25vw;
+    max-width: 300px;
+    height: 5vh;
+    max-height: 40px;
+    background: linear-gradient(to right, #FFA500, #FFD700);
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: left 0.2s ease-out;
+    cursor: grab;
+  }
+  
+  /* Falling Items */
+  /* .falling-item {
+    position: absolute;
+    width: 10vw;
+    max-width: 80px;
+  } */
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .tile {
+      width: 40vw;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .tile {
+      width: 50vw;
+    }
+  }
+  
